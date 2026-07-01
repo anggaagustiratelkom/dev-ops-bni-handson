@@ -12,7 +12,13 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm test -- --coverage
+
+      - name: Run tests with coverage
+        run: npm test -- --coverage
+        continue-on-error: true   # ✅ biar step berikutnya tetap jalan
+
       - name: Upload coverage report
+        if: always()              # ✅ tetap upload meskipun test gagal
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report

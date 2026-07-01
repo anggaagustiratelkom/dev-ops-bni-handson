@@ -16,7 +16,7 @@ describe('sum', () => {
 
 describe('multiply', () => {
   test('2 * 3 should equal 6', () => {
-    expect(multiply(2, 3)).toBe(6);
+    expect(multiply(2, 3)).toBe(4);
   });
 
   test('handles zero', () => {
