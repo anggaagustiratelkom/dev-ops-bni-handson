@@ -13,13 +13,26 @@ jobs:
       - run: npm run build
       - run: npm test -- --coverage
 
-      - name: Run tests with coverage
-        run: npm test -- --coverage
-        continue-on-error: true   # ✅ biar step berikutnya tetap jalan
-
-      - name: Upload coverage report
-        if: always()              # ✅ tetap upload meskipun test gagal
+      - name: Run tests
+        id: test_step
+        run: npm test -- --coverage --verbose --coverageReporters=text
+        continue-on-error: true
+      
+      - name: Upload coverage
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: coverage/
+      
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: reports/
+      
+      - name: Fail if tests failed
+        if: steps.test_step.outcome == 'failure'
+        run: exit 1
+
